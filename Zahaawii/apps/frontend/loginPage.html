@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login page</title>
+  <link href="css/loginPage.css" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/3277b84a7d.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+
+<body>
+
+  <h1 class="topName"> Zahaawii's blog </h1>
+  <div class="loginBox">
+    <form class="createUser">
+      <h1>Create User</h1>
+      <div class="input-box">
+        <label for="name"> </label>
+        <input type="text" name="name" id="name" placeholder="Username" required>
+        <i class="fa-solid fa-user"></i>
+        <i class="bx bxs-userInfo"></i>
+      </div>
+
+      <div class="input-box">
+        <label for="email"></label>
+        <input type="email" name="email" id="email" placeholder="Email" required>
+        <i class="fa-solid fa-envelope"></i>
+      </div>
+
+
+      <div class="input-box">
+        <label for="password"></label>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+        <i class="bx bxs-lock-alt"></i>
+      </div>
+
+
+      <div class="input-box">
+        <label for="addPhoto" class="file-upload"></label>
+        <input type="file" name="imgPath" id="addPhoto">
+        <i class="fa-solid fa-image"></i>
+      </div>
+
+
+      <div class="remember-forgot" style="justify-content: center;">
+        <a href="index.html"> Already signed up?</a>
+      </div>
+      <button type="submit" class="btn">Create account</button>
+
+      <div class="icons">
+        <a href="#" class="fa fa-apple"></a>
+        <a href="" target="_blank" class="fa fa-github"></a>
+        <a href="#" class="fa fa-google"></a>
+        <a href="#" class="fa fa-reddit"></a>
+        <a href="#" class="fa fa-facebook"></a>
+        <a href="#" class="fa fa-instagram" ></a>
+
+      </div>
+    </form>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+
+    const form = document.querySelector('.createUser');
+    const submitButton = document.querySelector('.btn');
+
+    function showError(msg) {
+      const old = document.querySelector('.create-user-error');
+      if (old) old.remove();
+      const p = document.createElement('p');
+      p.className = 'create-user-error';
+      p.style.color = 'red';
+      p.textContent = msg;
+      form.appendChild(p);
+    }
+
+    async function submitSignup(event) {
+      event.preventDefault();
+      submitButton.disabled = true;
+
+      const fd = new FormData(form);
+      const file = fd.get("imgPath");
+      const hasFile = file && file.size > 0;
+
+      const payload = {
+        name: fd.get('name'),
+        email: fd.get('email'),
+        password: fd.get('password'),
+      };
+
+
+      try {
+        const { id } = await window.authClient.signup(payload);
+
+        if (!id) {
+          throw new Error("Failed to create user");
+        }
+
+        if (!window.authClient.getCachedUser()) {
+          throw new Error("Failed to initialize authenticated session");
+        }
+
+        if (hasFile) {
+          const fileFd = new FormData();
+          fileFd.append('file', file);
+          const res2 = await window.authClient.fetchWithAuth(`/api/v1/uploads/images/${id}`, {
+            method: "POST",
+            body: fileFd,
+          });
+          if (!res2.ok) throw new Error(`Image failed: ${res2.status}`);
+        }
+
+        window.location.replace('index.html');
+      } catch (err) {
+        const txt = err?.body || err?.message || "";
+        if (txt && txt.toLowerCase().includes("username")) {
+          showError("Username already exist. Vælg et andet brugernavn.");
+        } else {
+          showError("Kunne ikke oprette bruger. Prøv igen.");
+        }
+        console.log(err);
+      } finally {
+        submitButton.disabled = false;
+      }
+    }
+
+    form.addEventListener("submit", submitSignup);
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        await window.authClient.initializeSession();
+      } catch (error) {
+        console.error("[signup] Failed to initialize CSRF session", error);
+      }
+    });
+
+  </script>
+</body>
+
+</html>

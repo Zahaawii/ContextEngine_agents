@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <header class="top-bar">
+
+        <nav class="nav-center" aria-label="User navigation">
+            <ul class="nav-items">
+                <li><a href="index.html">Overview</a></li>
+                <li onclick="openPopup()" style="cursor: pointer">Post</a></li>
+                <li><a href="blogsite.html"> Road map</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-right">
+            <form class="login" autocomplete="on">
+                <input class="js_username" type="text" name="username" placeholder="username" required>
+                <input class="js_password" type="password" name="password" placeholder="password" required>
+                <a href="loginPage.html" class="create-account"> Create account </a>
+                <button type="submit">login</button>
+            </form>
+
+            <div class="user-panel">
+                <button class="logout" type="button"><i class="fa-solid fa-right-from-bracket"></i></button>
+                <a class="avatar-link" href="#" target="_blank" rel="noopener" aria-label="Profile">
+                    <img class="avatar" src="/images/default.jpeg" alt="profile">
+                </a>
+            </div>
+        </div>
+
+    </header>
+
+    <p id="ip-address"></p>
+    <div class="single-blog-post-container">
+
+        <div class="single-blog-post-image">
+            <img src="images/roadmap.png" width="1000px">
+        </div>
+
+        <div class="single-blog-post-subject">
+            <h3> </h3>
+        </div>
+        <div class="single-blog-post-date">
+            <time class="singe-blog-date"></time>
+        </div>
+
+        <div class="single-blog-post-author">
+            <p> Author: zahaawii </p>
+        </div>
+
+        <pre class="single-blog-post-body">
+Welcome to my first blog post
+
+This is the very first entry in my project roadmap, and I want to use it to reflect on what we are building, which technologies we are using, and where we currently stand in the process.
+
+Our project is a full-stack application built around a Spring Boot REST API connected to a MySQL database. On top of that, we have a separate frontend written in HTML, CSS, and JavaScript. The frontend communicates with the backend via API calls, which means the two parts are fully decoupled.
+
+What we have used so far:
+
+Spring Boot (Java): 
+Provides the backbone of the application. It handles API endpoints, business logic, and connects to the database.
+
+MySQL: 
+Stores all of our data in a structured way. We have worked on database design, relationships, and queries to ensure the backend delivers the correct data.
+
+JPA: 
+To control our SQL data
+
+HTML, CSS, JavaScript: 
+Build the interface that users interact with. JavaScript (via fetch) pulls data dynamically from the REST API and updates the DOM without needing a full page refresh.
+
+How we have used it
+The backend exposes endpoints for creating, reading, updating, and deleting data (CRUD). 
+
+For example, blog posts and user information can be managed entirely through these APIs. 
+
+On the frontend, we have implemented dynamic rendering so that posts, comments, and user profiles are fetched directly from the backend and displayed in real time.
+
+We are also experimenting with JWT tokens for authentication, giving us secure login and role-based access. On top of that, we are learning about file uploads (such as profile images), and integrating them with our database structure.
+
+Where we are in the process
+Right now, the core features are in place:
+Users can be created and authenticated.
+Blog posts can be created, read, and displayed.
+Comments are fetched dynamically and rendered directly into the page.
+
+The next steps involve refining the user experience, handling images properly across backend and frontend, and preparing for deployment. 
+
+We are also looking into Docker for containerization, so we can run the database, backend, and potentially the frontend in a clean, reproducible environment.
+
+This blog marks the first step in documenting the journey — from raw code to a running, deployed project. The road ahead includes polishing features, setting up CI/CD, and ensuring the system is robust enough for real users.
+
+</pre>
+
+    </div>
+
+
+    <script src="auth.js"></script>
+    <script>
+
+        const urlParameter = new URLSearchParams(location.search);
+        const blogId = urlParameter.get("id");
+        const form = document.querySelector(".login");
+        const userPanel = document.querySelector(".user-panel");
+        const avatarLink = document.querySelector(".avatar-link");
+        const avatarImg = document.querySelector(".avatar");
+        const logoutBtn = document.querySelector(".logout");
+        let currentUser = null;
+
+        const subject = document.querySelector('.single-blog-post-subject h3');
+        const author = document.querySelector('.single-blog-post-author p');
+        const blogPostBody = document.querySelector('.single-blog-post-body');
+        const date = document.querySelector('.singe-blog-date');
+        const loginUrl = "/api/v1/users/auth/login";
+
+        function renderAfterAuth() {
+            const isLoggedIn = Boolean(currentUser?.username);
+
+            if (isLoggedIn) {
+                form.style.display = "none";
+                userPanel.style.display = "flex";
+                avatarLink.href = `userprofile.html?id=${encodeURIComponent(currentUser.username)}`;
+                avatarImg.src = currentUser.imgPath ? `images/${encodeURIComponent(currentUser.imgPath)}` : "images/default.jpeg";
+                avatarImg.alt = currentUser.username;
+                return;
+            }
+
+            form.style.display = "flex";
+            userPanel.style.display = "none";
+        }
+
+        async function loadBlogPost() {
+            if (!blogId) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/v1/blog/getbyid/${blogId}`, {
+                    credentials: "same-origin"
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Failed to load blog post (${res.status})`);
+                }
+
+                const data = await res.json();
+                if (!data) {
+                    return;
+                }
+
+                subject.textContent = data.subject || "";
+                blogPostBody.textContent = data.body || "";
+                date.textContent = data.publishDate || "";
+                author.textContent = `Author: ${data.userInfo?.name || data.author?.name || "Unknown"}`;
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const creds = Object.fromEntries(new FormData(form));
+
+            try {
+                await window.authClient.login(creds);
+                currentUser = await window.authClient.getCurrentUser(true);
+                renderAfterAuth();
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        logoutBtn?.addEventListener("click", async () => {
+            try {
+                await window.authClient.logout();
+                currentUser = null;
+                form.reset();
+                renderAfterAuth();
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            await window.authClient.initializeSession();
+            currentUser = await window.authClient.getCurrentUser(false);
+            renderAfterAuth();
+            await loadBlogPost();
+        });
+
+        window.addEventListener("auth:changed", (event) => {
+            currentUser = event.detail.user || null;
+            renderAfterAuth();
+        });
+
+    </script>
+</body>
+
+</html>

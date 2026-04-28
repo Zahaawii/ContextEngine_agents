@@ -1,0 +1,63 @@
+name: Test project and then Deploy Ubuntu Server Project
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env: 
+      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      CHROMADB_API_KEY: ${{ secrets.CHROMADB_API_KEY }}
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+    - name: Run docker test
+      run: |
+          docker compose up -d
+          sleep 60
+          docker ps -a
+          curl -i http://127.0.0.1:8282/healthz
+          docker compose down
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Add SSH private key to agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Debug SSH key format
+        run: |
+            echo "Key length: $(echo '${{ secrets.SSH_PRIVATE_KEY }}' | wc -l)"
+
+      - name: Deploy to Server
+        env:
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          APP_DIR: ${{ secrets.APP_DIR }}
+        run: |
+          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "
+          cd $APP_DIR &&
+          git remote set-url origin https://github.com/Zahaawii/AssistantAI_MCP.git && 
+          git pull origin main &&
+          docker compose up --build --detach
+          docker restart assistantai_backend
+          "

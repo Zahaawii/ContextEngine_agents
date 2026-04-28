@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CV, projects, technologies, certificates, and contact details for Zahaa.">
+    <title>Zahaa | Info</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="section-dots" aria-label="Section navigation">
+    <a class="active" href="#intro" aria-label="Intro"></a>
+    <a href="#projects" aria-label="Projects"></a>
+    <a href="#tech" aria-label="Technologies"></a>
+    <a href="#certificates" aria-label="Certificates"></a>
+    <a href="#contact" aria-label="Contact"></a>
+</nav>
+
+<main id="top">
+    <section class="scroll-view intro-view" id="intro" data-section="01">
+        <div class="section-index"><span>01</span></div>
+        <div class="intro-content">
+            <div class="intro-copy">
+                <p class="kicker">Hi, I'm</p>
+                <h1 id="profile-name"></h1>
+                <p class="role-badge" id="profile-title"></p>
+                <p class="intro-summary" id="profile-summary"></p>
+                <div class="intro-actions">
+                    <a class="primary-button" href="#projects">View My Work <span aria-hidden="true"></span></a>
+                    <button class="secondary-button" type="button" id="admin-toggle">Login / Edit</button>
+                </div>
+            </div>
+            <figure class="portrait-card">
+                <img id="profile-avatar" alt="">
+            </figure>
+        </div>
+        <a class="scroll-cue" href="#projects" aria-label="Next section"></a>
+    </section>
+
+    <section class="scroll-view projects-view" id="projects" data-section="02">
+        <div class="section-index"><span>02</span></div>
+        <div class="section-title">
+            <p>My Work</p>
+            <h2>Projects Timeline</h2>
+            <span>A timeline of selected projects I have built.</span>
+        </div>
+        <div class="timeline" id="project-timeline"></div>
+        <a class="scroll-cue" href="#tech" aria-label="Next section"></a>
+    </section>
+
+    <section class="scroll-view tech-view" id="tech" data-section="03">
+        <div class="section-index"><span>03</span></div>
+        <div class="section-title">
+            <p>Tech Stack</p>
+            <h2>Technologies I Use</h2>
+            <span>Tools and technologies I work with.</span>
+        </div>
+        <div class="tech-grid" id="tech-grid"></div>
+    </section>
+
+    <section class="scroll-view certificates-view" id="certificates" data-section="04">
+        <div class="section-index"><span>04</span></div>
+        <div class="section-title">
+            <p>Certificates</p>
+            <h2>Certificates</h2>
+            <span>Continuous learning and growing.</span>
+        </div>
+        <div class="certificate-grid" id="certificate-grid"></div>
+    </section>
+
+    <section class="scroll-view contact-view" id="contact" data-section="05">
+        <div class="section-index"><span>05</span></div>
+        <div class="section-title">
+            <p>Get In Touch</p>
+            <h2>Let's Connect</h2>
+            <span>Feel free to reach out through any of the channels below.</span>
+        </div>
+        <div class="contact-grid" id="contact-links"></div>
+        <a class="scroll-cue up" href="#intro" aria-label="Back to top"></a>
+    </section>
+</main>
+
+<dialog class="admin-dialog" id="admin-dialog" aria-labelledby="admin-title">
+    <form class="admin-card" id="admin-login-form">
+        <button class="dialog-close" type="button" id="admin-close" aria-label="Close admin login">&times;</button>
+        <h2 id="admin-title">Admin login</h2>
+        <p>Use your backend account to edit this page.</p>
+        <label>
+            Username
+            <input name="username" autocomplete="username" required>
+        </label>
+        <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <p class="admin-error" id="admin-error" role="alert"></p>
+        <button class="primary-button" type="submit">Log in</button>
+    </form>
+</dialog>
+
+<section class="editor-drawer" id="editor-drawer" aria-label="Admin editor">
+    <div class="editor-header">
+        <div>
+            <p class="kicker">Admin mode</p>
+            <h2>Page content</h2>
+        </div>
+        <button class="secondary-button" type="button" id="logout-button">Log out</button>
+    </div>
+    <p class="editor-note">Drafts are stored in this browser. Export the data file when the public page should change.</p>
+    <form id="profile-editor" class="editor-form"></form>
+    <label class="data-editor-label">
+        Full page data
+        <textarea id="data-editor" rows="18" spellcheck="false"></textarea>
+    </label>
+    <div class="editor-actions">
+        <button class="primary-button" type="button" id="save-draft">Save draft</button>
+        <button class="secondary-button" type="button" id="reset-draft">Reset draft</button>
+        <button class="secondary-button" type="button" id="export-data">Export data.js</button>
+    </div>
+</section>
+
+<script src="../auth.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

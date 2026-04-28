@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-store, must-revalidate">
+    <title>Frontpage</title>
+    <script src="https://kit.fontawesome.com/3277b84a7d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+
+<header class="top-bar">
+
+    <nav class="nav-center" aria-label="User navigation">
+        <ul class="nav-items">
+            <li><a href="index.html">Overview</a></li>
+            <li class="post-nav-bar" onclick="openPopup()" style="cursor: pointer">Post</li>
+	    <li class="post-nav-bar-1" style="cursor: pointer"><a href="articleai.html">Article AI</a></li>
+            <li><a href="blogsite.html?id=1052"> Road map</a></li>
+        </ul>
+    </nav>
+
+    <div class="nav-right">
+        <form class="login" autocomplete="on">
+            <input class="js_username" type="text" name="username" placeholder="username" required>
+            <input class="js_password" type="password" name="password" placeholder="password" required>
+            <div class="wrong-credentials"></div>
+            <a href="loginPage.html" class="create-account"> Create account </a>
+            <button type="submit">login</button>
+        </form>
+
+        <div class="user-panel">
+            <button class="logout" type="button"><i class="fa-solid fa-right-from-bracket"></i></button>
+            <a class="avatar-link" href="#" target="_blank" rel="noopener" aria-label="Profile">
+                <img class="avatar" src="images/default.jpeg" alt="profile">
+            </a>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="create-blog-post">
+    <button type="button" class="btn" data-open="post" aria-haspopup="dialog" aria-controls="popup">
+        <span class="plus-sign" aria-hidden="true">&#43;</span>
+        <span class="sr-only">Create blog post</span>
+    </button>
+
+    <div class="popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+        <button type="button" class="close-btn" data-close aria-label="Close">&times;</button>
+
+        <form class="createblogpost" autocomplete="off" novalidate>
+            <h2 id="popup-title" class="sr-only">Create blog post</h2>
+
+            <div class="add_subject">
+                <label for="form_subject" class="sr-only">Subject</label>
+                <input class="js_subject" type="text" name="subject" id="form_subject" placeholder="Add subject" required>
+            </div>
+
+            <div class="add_body">
+                <label for="form_body" class="sr-only">Body</label>
+                <textarea class="js_body" id="form_body" name="body" rows="12" cols="50" placeholder="Write your post..." required></textarea>
+            </div>
+
+            <div class="add_category">
+                <label for="form_category" class="sr-only">Category</label>
+                <input class="js_category" type="text" name="category" id="form_category" placeholder="Add category">
+            </div>
+
+            <button type="submit" class="submit-btn">Create blog post</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="chat-popup">
+
+    <button type="button" id="open-chat" class="btn btntest" data-open="test" aria-haspopup="dialog" aria-controls="popup">
+        <span class="chat-sign" aria-hidden="true"><i class="fa-solid fa-message"></i></span>
+    </button>
+
+    <div class="chatpopup" id="chatpopup" role="dialog" aria-labelledby="chat-popup-title">
+        <button type="button" class="chat-close-btn" data-close aria-label="Close">&times;</button>
+        <div class="chat-header">
+            <h2> Chat forum - by Zahaawii </h2>
+        </div>
+        <div class="connection">
+            Connecting...
+        </div>
+
+        <ul id="chat-message-area">
+
+
+        </ul>
+
+        <form class="chat-send-message" autocomplete="off" novalidate>
+
+            <div class="chat-add-text">
+                <div class="input-group">
+                    <input type="text" name="" id="message" placeholder="Type a message..." autocomplete="off" class="chat-form-control">
+                    <button type="submit" class="send-button">Send</button>
+
+                </div>
+
+
+            </div>
+
+        </form>
+    </div>
+
+
+</div>
+
+
+<main class="frontpage-container">
+    <aside class="home-userprofile-sidebar">
+        <h2 class="home-userprofile-name"> Welcome to my blog </h2>
+        <p class="home-userprofile-bio">Created by Zahaawii</p>
+        <md class="home-userprofile-joined">
+
+Hi, my name is **Zahaa**, also known as **Zahaawii**.
+
+This project started as a simple idea and has evolved into a continuously growing backend-driven blog platform. The goal of the project is learning by building: applying concepts as I learn them, refining architecture over time, and experimenting with real-world backend and infrastructure tooling.
+
+This repository represents a **test and learning environment**. The application is actively updated, refactored, and extended as I gain more experience.
+
+---
+
+Tech Stack
+
+The application is built using the following technologies and concepts:
+
+Backend
+Java with **Spring Boot**
+RESTful API architecture
+JWT-based authentication and authorization
+Custom logging system (all actions and errors are logged)
+
+Frontend
+JavaScript
+ HTML & CSS
+
+Data & AI
+MySQL
+Vector database
+RAG (Retrieval-Augmented Generation)
+LLM integration
+
+Real-time & Protocols
+WebSocket for chat functionality
+MCP (Model Context Protocol) client and server
+
+Infrastructure & DevOps
+Docker (containerized setup)
+CI/CD pipeline
+Deployed on a cloud-hosted Linux server
+
+---
+
+Key Features
+
+Secure user authentication and authorization  
+ Users can only edit or delete their own content
+
+Blog posts written in **Markdown**
+ Posts are stored and rendered as Markdown, preserving formatting and structure
+
+Custom logging
+ All important actions and system events are logged for traceability
+
+Real-time chat functionality using WebSockets
+
+AI-assisted features powered by LLMs and vector search
+
+---
+
+Deployment
+
+The application is deployed on a cloud server using Docker and automated through a CI/CD pipeline.  
+Each update goes through automated builds and tests before being deployed.
+
+---
+
+Project Status
+
+This is an **active test environment**.
+
+The project is intentionally iterative:
+Features may change
+Architecture may be refactored
+New technologies are added as I learn more
+
+The focus is not stability for production use, but **continuous learning, experimentation, and improvement**.
+
+---
+
+Future Direction
+
+Further hardening of security and authorization
+Improved observability and structured logging
+More advanced real-time and AI-driven features
+Ongoing refactoring toward cleaner architecture and better separation of concerns
+
+---
+
+This project serves as both a learning platform and a technical playground for exploring backend engineering, infrastructure, and AI-integrated systems.
+	</md>
+    </aside><div id="blog-posts-container"></div>
+</main>
+
+<script src="vendor/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/MarketingPipeline/Markdown-Tag/markdown-tag.js"></script>
+<script src="auth.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

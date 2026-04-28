@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frontpage</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="nav-bar">
+    <ul class="nav-panel">
+        <li><a href="">Logo</a></li>
+        <li><a href="">Contact</a></li>
+        <li><a href="">Profile</a></li>
+        <li><a href="">About me</a></li>
+        <li><a href="loginPage.html">Login</a></li>
+
+    </ul>
+</div>
+
+<div class="blog-section">
+
+    <div class="blog-box">
+
+        <div class="blog-userInfo-logo">
+            <p> billede </p>
+        </div>
+
+        <div class="blog-post-subject">
+            <h2 class="js-subject">  </h1>
+                <p class="js-getDate"> </p>
+                <p class="js-getAuthor"> </p>
+        </div>
+
+        <div class="blog-post-body">
+            <p class="js-body">
+
+            </p>
+        </div>
+
+        <div class="blog-interaction">
+
+            <div class="blog-likes-section">
+                <ul>
+                    <li><a href="" class="interaction">like</a></li>
+                    <li><a href="" class="interaction">comment</a></li>
+                    <li><a href="" class="interaction">share</a></li>
+                </ul>
+            </div>
+
+
+            <div class="blog-see-all-comments">
+
+                <p> this is a comment</p>
+                <p> this is a comment</p>
+                <p> this is a comment</p>
+
+            </div>
+
+            <div class="blog-add-comments">
+                <label>
+                    <input type="text" placeholder="Add a comment here">
+                </label>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="blog-section">
+
+    <div class="blog-box">
+
+        <div class="blog-userInfo-logo">
+            <p> billede </p>
+        </div>
+
+        <div class="blog-post-subject">
+            <h1> html </h1>
+        </div>
+
+        <div class="blog-post-body">
+            <p>
+
+            </p>
+        </div>
+
+        <div class="blog-interaction">
+
+            <div class="blog-likes-section">
+                <ul>
+                    <li>like</li>
+                    <li>comment</li>
+                    <li> share </li>
+                </ul>
+            </div>
+
+
+            <div class="blog-see-all-comments">
+
+                <p> this is a comment</p>
+                <p> this is a comment</p>
+                <p> this is a comment</p>
+
+            </div>
+
+            <div class="blog-add-comments">
+                <label>
+                    <input type="text" placeholder="Add a comment here">
+                </label>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+    const url = 'http://localhost:8080/api/blog/getallblogpost'
+
+    function getAllData () {
+        fetch(i)
+    }
+
+    function getSubject (divClass) {
+        let markup = "";
+        fetch(url)
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                data.forEach(blog => {
+                    markup = `${blog.subject}`
+
+                    document.querySelector(divClass)
+                        .innerHTML = `${markup}`;
+                })
+            });
+    }
+
+    function getBody (divClass) {
+        let getData = "";
+        fetch(url)
+            .then(res => {
+                return res.json();
+            })
+            .then (data => {
+                data.forEach(blog => {
+                    getData = `${blog.body}`
+
+                    document.querySelector(divClass)
+                        .innerHTML = `${getData}`;
+                })
+            })
+    }
+
+    function getDate (divClass) {
+        let getDate = "";
+        fetch(url)
+            .then(res => {
+                return res.json();
+            })
+            .then (data => {
+                data.forEach(blog => {
+                    getDate = `${blog.publishDate}`
+
+                    document.querySelector(divClass)
+                        .innerHTML = `${getDate}`;
+                })
+            })
+    }
+
+    function getAuthor(divClass) {
+        let getAuthor = "";
+        fetch(url).then(res => {
+            return res.json();
+        }).then (data => {
+            data.forEach(blog => {
+                getAuthor = `${blog.userInfo.name}`
+
+                document.querySelector(divClass).innerHTML = `Author: ${getAuthor}`;
+
+            })
+        })
+    }
+
+    getSubject(`.js-subject`);
+    getBody(`.js-body`);
+    getDate(`.js-getDate`);
+    getAuthor(`.js-getAuthor`);
+</script>
+
+
+</body>
+</html>

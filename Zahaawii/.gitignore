@@ -1,0 +1,47 @@
+.DS_Store
+**/.DS_Store
+
+# Environment and local secret files
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+infra/compose/.env.dev
+**/.env.local
+.envrc
+.direnv/
+
+# IDE/editor state
+.idea/
+**/.idea/
+*.iml
+**/*.iml
+*.ipr
+*.iws
+.vscode/
+**/.vscode/
+.history/
+
+# Build outputs and dependencies
+**/target/
+**/build/
+**/dist/
+**/coverage/
+**/.nyc_output/
+**/node_modules/
+
+# Logs and temp files
+*.log
+logs/
+pids/
+*.pid
+*.pid.lock
+*.swp
+*.swo
+
+# Local tooling and internal notes
+.codex/
+WORKLOG_*.md
+.repo-backups/

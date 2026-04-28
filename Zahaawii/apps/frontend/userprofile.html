@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://kit.fontawesome.com/3277b84a7d.js" crossorigin="anonymous"></script>
+    <title>Profile</title>
+</head>
+
+<body>
+
+    <header class="top-bar">
+
+        <nav class="nav-center" aria-label="User navigation">
+            <ul class="nav-items">
+                <li><a href="index.html">Overview</a></li>
+                <li onclick="openPopup()" style="cursor: pointer">Post</a></li>
+               	<li class="post-nav-bar-1" style="cursor: pointer; display: flex;"><a href="articleai.html">Article AI</a>
+		<li><a href="blogsite.html"> Road map</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-right">
+            <form class="login" autocomplete="on">
+                <a href="" class="create-account"> Create account </a>
+                <input class="js_username" type="text" name="username" placeholder="username" required>
+                <input class="js_password" type="password" name="password" placeholder="password" required>
+                <button type="submit"><i class="fa-solid fa-right-to-bracket"></i></button>
+            </form>
+
+            <div class="user-panel">
+                <button class="logout" type="button"><i class="fa-solid fa-right-from-bracket"></i></button>
+                <a class="avatar-link" href="#" target="_blank" rel="noopener" aria-label="Profile">
+                    <img class="avatar" src="images/default.jpeg" alt="profile">
+                </a>
+            </div>
+        </div>
+
+    </header>
+
+
+
+<div class="create-blog-post">
+  <button type="button" class="btn" data-open="post" aria-haspopup="dialog" aria-controls="popup">
+    <span class="plus-sign" aria-hidden="true">&#43;</span>
+    <span class="sr-only">Create blog post</span>
+  </button>
+
+  <div class="popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+    <button type="button" class="close-btn" data-close aria-label="Close">&times;</button>
+
+    <form class="createblogpost" autocomplete="off" novalidate>
+      <h2 id="popup-title" class="sr-only">Create blog post</h2>
+
+      <div class="add_subject">
+        <label for="form_subject" class="sr-only">Subject</label>
+        <input class="js_subject" type="text" name="subject" id="form_subject" placeholder="Add subject" required>
+      </div>
+
+      <div class="add_body">
+        <label for="form_body" class="sr-only">Body</label>
+        <textarea class="js_body" id="form_body" name="body" rows="12" cols="50" placeholder="Write your post..." required></textarea>
+      </div>
+
+      <div class="add_category">
+        <label for="form_category" class="sr-only">Category</label>
+        <input class="js_category" type="text" name="category" id="form_category" placeholder="Add category">
+      </div>
+
+      <button type="submit" class="submit-btn">Create blog post</button>
+    </form>
+  </div>
+</div>
+
+
+    <main id="test">
+
+        <section id="userprofileinfo" class="userprofile">
+
+
+            <div id="userprofilecontainer" class="userprofile-content"></div>
+
+        </section>
+    </main>
+
+    <script src="auth.js" defer></script>
+    <script src="userprofile.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #0d1117;
+  flex-direction: column;
+  margin-top: 50px;
+  padding: 16px;
+}
+
+.topName {
+  color: cornflowerblue;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-decoration: underline;
+}
+
+.loginBox{
+  width: 420px;
+  max-width: 100%;
+  background-color: transparent;
+  color: cornflowerblue;
+  border: 2px solid #30363d;
+  border-radius: 10px;
+  box-shadow: 0 24px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px 40px;
+  backdrop-filter: blur(20px);
+}
+
+.loginBox h1 {
+  font-size: 36px;
+  text-align: center;
+}
+
+.loginBox .input-box {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 30px 0;
+}
+
+.input-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  border: 1px solid cornflowerblue;
+  border-radius: 40px;
+  font-size: 16px;
+  color: cornflowerblue;
+  padding: 10px 45px 20px 20px;
+}
+
+.login-error {
+  border-color: #ff6b6b !important;
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+}
+
+.input-box input::placeholder {
+  color: cornflowerblue;
+}
+
+.input-box i {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  margin: -10px 0 15px;
+}
+
+.remember-forgot label input {
+  accent-color: cornflowerblue;
+  margin-right: 3px;
+}
+
+.remember-forgot a {
+  color: cornflowerblue;
+  text-decoration: none;
+}
+
+.remember-forgot a:hover {
+  text-decoration: underline;
+}
+
+.btn {
+  width: 100%;
+  height: 45px;
+  background: cornflowerblue;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  cursor: pointer;
+  font-size: 16px;
+
+  font-weight: 600;
+}
+
+.loginBox .register-link {
+  font-size: 14.5px;
+  text-align: center;
+  margin-top: 20px;
+  margin: 20px 0 15px;
+}
+
+.register-link p a {
+  color: cornflowerblue;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.fa {
+  padding: 25px;
+  font-size: 30px;
+  text-align: center;
+  text-decoration: none;
+  color: cornflowerblue;
+}
+
+.fa:hover {
+  opacity: 0.7;
+}
+
+::file-selector-button {
+  background-color: cornflowerblue;
+  border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+  body {
+    margin-top: 20px;
+    justify-content: flex-start;
+  }
+
+  .topName {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .loginBox {
+    width: 100%;
+    padding: 22px 16px;
+  }
+
+  .loginBox h1 {
+    font-size: 28px;
+  }
+
+  .input-box {
+    margin: 22px 0;
+  }
+
+  .remember-forgot {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .fa {
+    padding: 18px;
+    font-size: 24px;
+  }
+}

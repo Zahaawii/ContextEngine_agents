@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/llm/style.css"/>
+  <script src="https://kit.fontawesome.com/3277b84a7d.js" crossorigin="anonymous"></script>
+  <title>AssistantAI</title>
+</head>
+
+<body>
+  <h2 class="logo">Article AI</h2>
+
+  <button type="button" class="open-kba-btn">+ Add Article <i class="fa-regular fa-newspaper"></i></button>
+
+  <div class="container">
+    <div class="chat-container">
+      <div class="wrapper">
+        <div id="chat-window" class="chat-window"></div>
+
+        <div class="send_question">
+          <form class="question">
+            <textarea class="user_question" name="text" placeholder="Ask a question..." rows="1" required></textarea>
+            <button class="btn" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popup">
+    <div class="popup">
+      <button class="close-btn">&times;</button>
+      <h2>Add Article</h2>
+
+      <form class="send_to_database">
+        <input
+          type="text"
+          name="id"
+          class="user-id-input"
+          placeholder="Enter document ID"
+          required
+        />
+        <textarea
+          class="user-kba-input"
+          name="document"
+          placeholder="Add text to be stored"
+          rows="10"
+          required
+        ></textarea>
+        <button type="submit" class="user-kba-btn">Add to train the model <i class="fa-solid fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="/llm/browser.js"></script>
+</body>
+
+</html>

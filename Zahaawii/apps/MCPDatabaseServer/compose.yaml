@@ -1,0 +1,12 @@
+
+services:
+  mcp:
+    build: .
+    container_name: test
+    environment:
+      CHROMADB_API_KEY: ${CHROMADB_API_KEY}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      TZ: Europe/Copenhagen
+    ports:
+      - "8282:8282"
+    restart: unless-stopped

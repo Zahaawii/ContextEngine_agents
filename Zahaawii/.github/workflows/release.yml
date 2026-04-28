@@ -1,0 +1,115 @@
+name: ci-build-and-push
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ci-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+    outputs:
+      owner_lc: ${{ steps.vars.outputs.owner_lc }}
+      repo_lc: ${{ steps.vars.outputs.repo_lc }}
+      short_sha: ${{ steps.vars.outputs.short_sha }}
+      branch_tag: ${{ steps.vars.outputs.branch_tag }}
+    steps:
+      - id: vars
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          owner_lc="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
+          repo_lc="$(echo "${GITHUB_REPOSITORY#*/}" | tr '[:upper:]' '[:lower:]')"
+          short_sha="${GITHUB_SHA::7}"
+
+          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            branch_tag="prod"
+          elif [[ "${GITHUB_REF_NAME}" == "develop" ]]; then
+            branch_tag="staging"
+          else
+            echo "Unsupported branch: ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
+
+          echo "owner_lc=${owner_lc}" >> "$GITHUB_OUTPUT"
+          echo "repo_lc=${repo_lc}" >> "$GITHUB_OUTPUT"
+          echo "short_sha=${short_sha}" >> "$GITHUB_OUTPUT"
+          echo "branch_tag=${branch_tag}" >> "$GITHUB_OUTPUT"
+
+  validate-maven:
+    runs-on: ubuntu-latest
+    needs: meta
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Test blog backend
+        working-directory: apps/ZahaawiisBlog
+        run: ./mvnw -B test
+
+      - name: Build MCP backend (skip tests)
+        working-directory: apps/MCPDatabaseServer
+        run: ./mvnw -B -DskipTests package
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs:
+      - meta
+      - validate-maven
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image_suffix: blog-backend
+            context: apps/ZahaawiisBlog
+          - image_suffix: personal-chatbot
+            context: apps/personalChatBotJS
+          - image_suffix: mcp-server
+            context: apps/MCPDatabaseServer
+          - image_suffix: blog-frontend
+            context: apps/frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push ${{ matrix.image_suffix }}
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.context }}/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ghcr.io/${{ needs.meta.outputs.owner_lc }}/${{ needs.meta.outputs.repo_lc }}-${{ matrix.image_suffix }}:${{ needs.meta.outputs.branch_tag }}
+            ghcr.io/${{ needs.meta.outputs.owner_lc }}/${{ needs.meta.outputs.repo_lc }}-${{ matrix.image_suffix }}:sha-${{ needs.meta.outputs.short_sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

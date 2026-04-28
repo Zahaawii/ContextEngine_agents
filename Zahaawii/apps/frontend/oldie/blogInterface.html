@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All blog post</title>
+</head>
+<body>
+
+<h1> This will showcase all blogs</h1>
+
+<div class ="">
+    <h1 class ="test"> </h1>
+</div>
+
+<script>
+    /*
+       let markup = "";
+       fetch('http://localhost:8080/api/blog/getallblogpost')
+           .then(res => {
+               return res.json();
+           })
+           .then(data => {
+               data.forEach(blog => {
+                markup = `${blog.subject}`
+
+                   document.querySelector('.test')
+                       .innerHTML = `${markup}`;
+               })
+           });
+    */
+
+    function test () {
+        let markup = "";
+        fetch('http://localhost:8080/api/blog/getallblogpost')
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                data.forEach(blog => {
+                    markup = `${blog.userInfo.name}`
+
+                    console.log(markup);
+                })
+            });
+    }
+
+    test();
+
+
+</script>
+</body>
+</html>
